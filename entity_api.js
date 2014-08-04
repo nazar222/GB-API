@@ -73,8 +73,8 @@ function userProjects(request,response){
 
     connection.query("select rcientity.id , rcientity.name "
         + " from rcientity right join rciuserrole "
-        +"on rcientity.id=rciuserrole.rcientity_id  where useraccount_id="+connection.escape(request.params.userId)+" and project=true ",function(err,rows,fields)
-    {
+        +"on rcientity.id=rciuserrole.rcientity_id  where useraccount_id="+connection.escape(request.params.userId)+" and project=true ",
+        function(err,rows,fields) {
         console.log("Requested URL :"+ request.url);
         response.writeHead(200, {"Content-Type": "text/html;charset=utf-8"});
 
@@ -87,20 +87,21 @@ function userProjects(request,response){
             connection.query("select rcientity.id , rcientity.name "
                 + " from rcientity right join rciuserrole "
                 + "on rcientity.id=rciuserrole.rcientity_id  where useraccount_id="+connection.escape(request.params.userId)+
-                " and parent_id="+obj.id ,function(err,apartmentRows,fields) {
+                " and (parent_id="+obj.id+" or rcientity.id="+obj.id+")",function(err,apartmentRows,fields) {
 
                 if (err) throw err;
                 results.push(apartmentRows);
                 console.log(apartmentRows);
 //                console.log("results :",results);
 //                response.write("Projects are : "+ JSON.stringify(rows));
-//                response.write("apt are : "+ JSON.stringify(apartmentRows));
+                response.write("apt are : "+ JSON.stringify(apartmentRows));
+                response.end();
 
                 console.log("loop");
             });
 
         }
-        response.end("Apt :"+results);
+
     //    console.log(rows[1]);
 
     //    response.write("Projects are : "+ JSON.stringify(rows[0])+",apartments: "+JSON.stringify(rows[1]));
