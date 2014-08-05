@@ -9,10 +9,7 @@ var connection = mysql.createConnection({
     port: 3306,
     user: 'root',
     password: 'root',
-    database: 'gb_schema',
-    multipleStatements: true
-    //	password : 'GrHBS2672&',
-    //	database: 'GBIT'
+    database: 'gb_schema'
 });
 
 function rciEntity(request, response) {
@@ -32,11 +29,9 @@ function rciUserAccount(request, response) {
     console.log("Request received.");
     connection.query("select username,id,authtoken from useraccount", function (err, result, fields) {
         console.log("Requested URL :" + request.url);
-        //	response.setHeader("Set-Cookie", []);
-        //response.removeHeader("Set-Cookie");
+
         response.writeHead(200, {"Content-Type": "text/plain;charset=utf-8"});
         response.write("All User ID's are : " + JSON.stringify(result) + "\n\n" + JSON.stringify(request.headers));
-
         response.end();
     });
 
@@ -76,16 +71,16 @@ function userProjects(request, response) {
 
                     if (err) throw err;
                     console.log(apartmentRows);
-                    response.write("Project and Apartments are :"+JSON.stringify(apartmentRows));
+                    response.write("Project and Apartments are :" + JSON.stringify(apartmentRows));
                     totalQueries--; //decreases the query count
                     if (totalQueries == 0) { //when all queries are performed end the response
-                        response.end(); }
+                        response.end();
+                    }
 
                     console.log("loop");
 
                 });
             }
-
 
         });
 
